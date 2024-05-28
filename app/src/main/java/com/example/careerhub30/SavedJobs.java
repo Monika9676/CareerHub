@@ -28,17 +28,11 @@ public class SavedJobs extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_saved_jobs, container, false);
-
-        // Initialize the database
         DBHelper dbHelper = new DBHelper(requireContext());
         database = dbHelper.getWritableDatabase();
-
-        // Retrieve saved job posts from the database
         savedJobPosts = new ArrayList<>();
 
         retrieveSavedJobPosts();
-
-        // Initialize ListView and set the adapter
         ListView savedJobListView = view.findViewById(R.id.savedList);
         adapter = new SavedJobsAdapter(requireContext(), savedJobPosts);
         savedJobListView.setAdapter(adapter);
@@ -59,15 +53,12 @@ public class SavedJobs extends Fragment {
             int titleIndex = cursor.getColumnIndex("title");
             int descriptionIndex = cursor.getColumnIndex("description");
             do {
-                // Check if column indices are valid
                 if (titleIndex != -1 && descriptionIndex != -1) {
                     String title = cursor.getString(titleIndex);
                     String description = cursor.getString(descriptionIndex);
                     Log.d("SavedJobs", "Fetched job post: " + title + " - " + description);
                     savedJobPosts.add(new SavedJobPost(title, description));
                 } else {
-                    // Handle case where column indices are invalid
-                    // Log an error or perform appropriate error handling
                     Log.e("SavedJobs", "Invalid column indices");
                 }
             } while (cursor.moveToNext());

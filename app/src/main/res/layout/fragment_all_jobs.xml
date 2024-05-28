@@ -10,7 +10,6 @@
 
     <!-- ListView for job posts -->
 
-    <!-- Button to add a new job post -->
     <ListView
         android:id="@+id/jobList"
         android:layout_width="match_parent"

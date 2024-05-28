@@ -15,23 +15,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Create the job_posts table
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS job_posts (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "title TEXT," +
-                        "description TEXT)"
+                        "description TEXT," +
+                        "isSaved INTEGER DEFAULT 0)"
         );
-
-        // Create the saved_jobs table
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS saved_jobs (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "title TEXT," +
                         "description TEXT)"
         );
-
-        // Create the users table
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS users (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +

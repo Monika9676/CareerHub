@@ -20,11 +20,11 @@
         android:layout_marginBottom="-23dp"
         android:textSize="14sp" />
 
-    <Button
+    <ImageButton
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="apply"
         android:id="@+id/apply"
+        android:src="@drawable/ic_outline_save"
         android:onClick="onApplyButtonClick"
           android:layout_alignParentRight="true"/>
 </RelativeLayout>

@@ -19,18 +19,11 @@ public class JobFormActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_job_form); // Replace with your layout file
-
-        // Initialize the database helper
+        setContentView(R.layout.activity_job_form);
         dbHelper = new DBHelper(this);
-
-        // Initialize EditText fields
-        etJobRole = findViewById(R.id.etJobRole); // Replace with actual view ID
-        etDescription = findViewById(R.id.etDescription); // Replace with actual view ID
-
-
-        // Initialize submit button
-        Button submitButton = findViewById(R.id.submitButton); // Replace with actual view ID
+        etJobRole = findViewById(R.id.etJobRole);
+        etDescription = findViewById(R.id.etDescription);
+        Button submitButton = findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +46,6 @@ public class JobFormActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Check if the job post already exists
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
                 String query = "SELECT COUNT(*) FROM job_posts WHERE LOWER(title) = ? AND LOWER(description) = ?";
                 Cursor cursor = db.rawQuery(query, new String[]{roleLowerCase, descriptionLowerCase});
@@ -64,7 +56,6 @@ public class JobFormActivity extends AppCompatActivity {
                     cursor.close();
 
                     if (count > 0) {
-                        // Job post already exists, show a toast message
                         Toast.makeText(JobFormActivity.this, "This job post already exists!", Toast.LENGTH_SHORT).show();
                     } else {
                         // Job post does not exist, insert the new job post
@@ -72,15 +63,10 @@ public class JobFormActivity extends AppCompatActivity {
                         values.put("title", role);
                         values.put("description", description);
                         db.insert("job_posts", null, values);
-
-                        // Show success message
                         Toast.makeText(JobFormActivity.this, "Job post saved successfully!", Toast.LENGTH_SHORT).show();
-
-                        // Close the activity
                         finish();
                     }
                 } else {
-                    // Handle error
                     Toast.makeText(JobFormActivity.this, "Error checking job post", Toast.LENGTH_SHORT).show();
                 }
             }

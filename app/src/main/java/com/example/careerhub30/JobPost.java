@@ -1,3 +1,4 @@
+
 package com.example.careerhub30;
 
 import android.os.Parcel;
@@ -6,13 +7,12 @@ import android.os.Parcelable;
 public class JobPost implements Parcelable {
     private String title;
     private String description;
-
+    private boolean isSaved;
     public JobPost(String title, String description) {
         this.title = title;
         this.description = description;
+        this.isSaved = false;
     }
-
-    // Getters and setters
     public String getTitle() {
         return title;
     }
@@ -25,7 +25,14 @@ public class JobPost implements Parcelable {
         this.title = title;
     }
 
-    // Parcelable implementation
+    public boolean isSaved() {
+        return isSaved;
+    }
+
+    public void setSaved(boolean saved) {
+        isSaved = saved;
+    }
+
     public static final Parcelable.Creator<JobPost> CREATOR = new Parcelable.Creator<JobPost>() {
         @Override
         public JobPost createFromParcel(Parcel in) {
@@ -41,14 +48,14 @@ public class JobPost implements Parcelable {
     private JobPost(Parcel in) {
         title = in.readString();
         description = in.readString();
+        isSaved = in.readByte() != 0; // Read saved status
     }
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
         dest.writeString(description);
+        dest.writeByte((byte) (isSaved ? 1 : 0)); // Write saved status
     }
-
     @Override
     public int describeContents() {
         return 0;

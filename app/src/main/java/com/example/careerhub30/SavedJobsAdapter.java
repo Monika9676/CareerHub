@@ -42,14 +42,11 @@ public class SavedJobsAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_saved_post, parent, false);
             Log.d("SavedJobsAdapter", "getView: Inflating new view for position " + position);
         }
-
-        // Get the current saved job post
         SavedJobPost savedJobPost = savedJobPosts.get(position);
         Log.d("SavedJobsAdapter", "getView: Binding data for position " + position + ", Title: " + savedJobPost.getTitle() + ", Description: " + savedJobPost.getDescription());
 
         TextView titleTextView = convertView.findViewById(R.id.titleTextView2);
         TextView descriptionTextView = convertView.findViewById(R.id.descriptionTextView2);
-        // Bind data to UI components
         titleTextView.setText(savedJobPost.getTitle());
         descriptionTextView.setText(savedJobPost.getDescription());
 
