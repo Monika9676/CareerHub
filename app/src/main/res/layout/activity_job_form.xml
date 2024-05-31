@@ -7,17 +7,28 @@
     android:orientation="vertical"
     android:gravity="center_vertical"
     android:background="@drawable/bg4"
-    tools:context=".JobFormActivity">
-       <TextView
+    tools:context=".JobFormActivity"
+    android:paddingLeft="10sp"
+    android:paddingRight="10sp">
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-           android:text="Post a New Job"
-        android:textSize="40sp"
-        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50sp"
+        android:text="Post a New Job"
         android:textColor="@color/black"
-        android:layout_marginBottom="16dp"
-        android:layout_gravity="center"/>
+        android:textSize="35sp"
+        android:textStyle="bold"
+        />
 
+    <EditText
+        android:id="@+id/etCompany"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Company Name"
+        android:padding="12dp"
+        android:layout_marginBottom="8dp"/>
         <EditText
             android:id="@+id/etJobRole"
             android:layout_width="match_parent"
@@ -35,20 +46,27 @@
             android:padding="12dp"
             android:layout_marginBottom="8dp"/>
         <EditText
-            android:id="@+id/location"
+            android:id="@+id/etLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Location"
             android:padding="12dp"
             android:layout_marginBottom="8dp"/>
-        <Button
-            android:id="@+id/submitButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit"
+       <EditText
+        android:id="@+id/etLink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Provide link of job form"
+        android:padding="12dp"
+        android:layout_marginBottom="8dp"/>
 
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"/>
-    </LinearLayout>
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="346dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="Submit" />
+</LinearLayout>
 
 

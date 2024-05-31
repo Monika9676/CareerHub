@@ -10,12 +10,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 public class JobFormActivity extends AppCompatActivity {
-
-    private EditText etJobRole, etDescription;
+    private EditText etJobRole, etDescription, etLink ,etCompany, etLocation;
     private DBHelper dbHelper;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,13 +20,18 @@ public class JobFormActivity extends AppCompatActivity {
         dbHelper = new DBHelper(this);
         etJobRole = findViewById(R.id.etJobRole);
         etDescription = findViewById(R.id.etDescription);
+        etLink=findViewById(R.id.etLink);
+        etCompany=findViewById(R.id.etCompany);
+        etLocation=findViewById(R.id.etLocation);
         Button submitButton = findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get values from EditText fields
                 String role = etJobRole.getText().toString().trim();
                 String description = etDescription.getText().toString().trim();
+                String link = etLink.getText().toString().trim();
+                String company= etCompany.getText().toString().trim();
+                String location = etLocation.getText().toString().trim();
 
                 String roleLowerCase = role.toLowerCase();
                 String descriptionLowerCase = description.toLowerCase();
@@ -54,14 +56,15 @@ public class JobFormActivity extends AppCompatActivity {
                     cursor.moveToFirst();
                     int count = cursor.getInt(0);
                     cursor.close();
-
                     if (count > 0) {
                         Toast.makeText(JobFormActivity.this, "This job post already exists!", Toast.LENGTH_SHORT).show();
                     } else {
-                        // Job post does not exist, insert the new job post
                         ContentValues values = new ContentValues();
                         values.put("title", role);
                         values.put("description", description);
+                        values.put("link", link);
+                        values.put("company", company);
+                        values.put("location", location);
                         db.insert("job_posts", null, values);
                         Toast.makeText(JobFormActivity.this, "Job post saved successfully!", Toast.LENGTH_SHORT).show();
                         finish();

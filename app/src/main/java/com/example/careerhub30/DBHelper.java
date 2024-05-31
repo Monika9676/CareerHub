@@ -20,18 +20,25 @@ public class DBHelper extends SQLiteOpenHelper {
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "title TEXT," +
                         "description TEXT," +
+                        "link TEXT," +
+                        "company TEXT," +
+                        "location TEXT," +
                         "isSaved INTEGER DEFAULT 0)"
         );
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS saved_jobs (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "title TEXT," +
+                        "link TEXT," +
+                        "company TEXT," +
+                        "location TEXT," +
                         "description TEXT)"
         );
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS users (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "username TEXT," +
+                        "email TEXT," +
                         "password TEXT)"
         );
     }

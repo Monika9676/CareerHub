@@ -13,10 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class SavedJobs extends Fragment {
 
@@ -34,7 +33,7 @@ public class SavedJobs extends Fragment {
 
         retrieveSavedJobPosts();
         ListView savedJobListView = view.findViewById(R.id.savedList);
-        adapter = new SavedJobsAdapter(requireContext(), savedJobPosts);
+        adapter = new SavedJobsAdapter(requireContext(), savedJobPosts, database);
         savedJobListView.setAdapter(adapter);
 
         TextView noSavedJobsTextView = view.findViewById(R.id.noSavedJobsTextView);
@@ -47,25 +46,25 @@ public class SavedJobs extends Fragment {
     }
 
     private void retrieveSavedJobPosts() {
-
-        Cursor cursor = database.rawQuery("SELECT title, description FROM saved_jobs", null);
+        Cursor cursor = database.rawQuery("SELECT id, title, description FROM saved_jobs", null);
         if (cursor != null && cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex("id");
             int titleIndex = cursor.getColumnIndex("title");
             int descriptionIndex = cursor.getColumnIndex("description");
             do {
-                if (titleIndex != -1 && descriptionIndex != -1) {
+                if (idIndex != -1 && titleIndex != -1 && descriptionIndex != -1) {
+                    int id = cursor.getInt(idIndex);
                     String title = cursor.getString(titleIndex);
                     String description = cursor.getString(descriptionIndex);
                     Log.d("SavedJobs", "Fetched job post: " + title + " - " + description);
-                    savedJobPosts.add(new SavedJobPost(title, description));
+                    savedJobPosts.add(new SavedJobPost(id, title, description));
                 } else {
                     Log.e("SavedJobs", "Invalid column indices");
                 }
             } while (cursor.moveToNext());
-                     cursor.close();
-             }
-            else{
-                Log.d("SavedJobs", "No saved jobs found");
-            }
+            cursor.close();
+        } else {
+            Log.d("SavedJobs", "No saved jobs found");
+        }
     }
 }

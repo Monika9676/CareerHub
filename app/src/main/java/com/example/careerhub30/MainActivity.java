@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
                 String username = editTextUsername.getText().toString();
                 String password = editTextPassword.getText().toString();
 
+                if (username.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "Please enter both username and password.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 // Check if the entered username and password match stored credentials
                 if (credentialsManager.checkCredentials(username, password)) {
                     Toast.makeText(MainActivity.this, "User " + username + " logged in successfully!", Toast.LENGTH_SHORT).show();

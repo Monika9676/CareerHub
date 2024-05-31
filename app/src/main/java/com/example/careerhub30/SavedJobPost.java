@@ -4,15 +4,21 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class SavedJobPost implements Parcelable {
+    private int id;
     private String title;
     private String description;
 
-    public SavedJobPost(String title, String description) {
+    public SavedJobPost(int id, String title, String description) {
+        this.id = id;
         this.title = title;
         this.description = description;
     }
 
     // Getters and setters
+    public int getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -21,8 +27,16 @@ public class SavedJobPost implements Parcelable {
         return description;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     // Parcelable implementation
@@ -39,12 +53,14 @@ public class SavedJobPost implements Parcelable {
     };
 
     private SavedJobPost(Parcel in) {
+        id = in.readInt();
         title = in.readString();
         description = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(title);
         dest.writeString(description);
     }

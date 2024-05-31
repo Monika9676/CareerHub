@@ -1,6 +1,4 @@
 package com.example.careerhub30;
-
-import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -16,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+import android.content.ContentValues;
 public class AllJobs extends Fragment implements JobPostAdapter.JobSaveListener {
 
     private List<JobPost> jobPosts;
@@ -31,14 +29,14 @@ public class AllJobs extends Fragment implements JobPostAdapter.JobSaveListener 
         database = dbHelper.getWritableDatabase();
 
         jobPosts = new ArrayList<>();
-        jobPosts.add(new JobPost("Android Developer", "Join our team!"));
-        jobPosts.add(new JobPost("Web Designer", "Create stunning websites."));
-        jobPosts.add(new JobPost("Data Analyst", "Analyze data like a pro."));
+        jobPosts.add(new JobPost("Android Developer", "Join our team!", "https://example.com", "Company A", "Location A"));
+        jobPosts.add(new JobPost("Web Designer", "Create stunning websites.", "https://example.com", "Company B", "Location B"));
+        jobPosts.add(new JobPost("Data Analyst", "Analyze data like a pro.", "https://example.com", "Company C", "Location C"));
 
         Collections.shuffle(jobPosts);
-         retrieveJobPosts();
+        retrieveJobPosts();
         ListView jobListView = view.findViewById(R.id.jobList);
-        adapter = new JobPostAdapter(requireContext(), jobPosts, this,database);
+        adapter = new JobPostAdapter(requireContext(), jobPosts, this, database);
         jobListView.setAdapter(adapter);
 
         return view;
@@ -58,27 +56,41 @@ public class AllJobs extends Fragment implements JobPostAdapter.JobSaveListener 
                 Toast.makeText(requireContext(), "This job is already saved!", Toast.LENGTH_SHORT).show();
             } else {
                 // Job post does not exist, save it
-                database.execSQL("INSERT INTO saved_jobs (title, description) VALUES (?, ?)",
-                        new Object[]{jobPost.getTitle(), jobPost.getDescription()});
-                jobPost.setSaved(true);
-                adapter.notifyDataSetChanged();
-                Toast.makeText(requireContext(), "Job saved successfully!", Toast.LENGTH_SHORT).show();
+                ContentValues values = new ContentValues();
+                values.put("title", jobPost.getTitle());
+                values.put("description", jobPost.getDescription());
+                values.put("link", jobPost.getLink());
+                values.put("company", jobPost.getCompany());
+                values.put("location", jobPost.getLocation());
+                long result = database.insert("saved_jobs", null, values);
+                if (result != -1) {
+                    jobPost.setSaved(true);
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(requireContext(), "Job saved successfully!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Failed to save job", Toast.LENGTH_SHORT).show();
+                }
             }
         } else {
             Toast.makeText(requireContext(), "Error checking if job is already saved", Toast.LENGTH_SHORT).show();
         }
     }
-
     private void retrieveJobPosts() {
-        Cursor cursor = database.rawQuery("SELECT title, description FROM job_posts", null);
+        Cursor cursor = database.rawQuery("SELECT title, description, link, company, location FROM job_posts", null);
         if (cursor != null && cursor.moveToFirst()) {
             int titleIndex = cursor.getColumnIndex("title");
             int descriptionIndex = cursor.getColumnIndex("description");
+            int linkIndex = cursor.getColumnIndex("link");
+            int companyIndex = cursor.getColumnIndex("company");
+            int locationIndex = cursor.getColumnIndex("location");
             do {
-                if (titleIndex != -1 && descriptionIndex != -1) {
+                if (titleIndex != -1 && descriptionIndex != -1 && linkIndex != -1 && companyIndex != -1 && locationIndex != -1) {
                     String title = cursor.getString(titleIndex);
                     String description = cursor.getString(descriptionIndex);
-                    jobPosts.add(new JobPost(title, description));
+                    String link = cursor.getString(linkIndex);
+                    String company = cursor.getString(companyIndex);
+                    String location = cursor.getString(locationIndex);
+                    jobPosts.add(new JobPost(title, description, link, company, location));
                 } else {
                     Log.e("AllJobs", "Invalid column indices");
                 }

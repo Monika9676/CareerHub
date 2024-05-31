@@ -14,7 +14,6 @@ import android.widget.TextView;
 import java.util.List;
 
 public class JobPostAdapter extends BaseAdapter {
-
     private Context context;
     private List<JobPost> jobPosts;
     private JobSaveListener jobSaveListener;
@@ -36,6 +35,7 @@ public class JobPostAdapter extends BaseAdapter {
             }
         }
     }
+
     @Override
     public int getCount() {
         return jobPosts.size();
@@ -64,23 +64,16 @@ public class JobPostAdapter extends BaseAdapter {
 
         titleTextView.setText(jobPost.getTitle());
         descriptionTextView.setText(jobPost.getDescription());
-        if (jobPost.isSaved()) {
-            applyButton.setImageResource(R.drawable.ic_fill_save);
-            applyButton.setEnabled(false);
-        } else {
-            applyButton.setImageResource(R.drawable.ic_outline_save);
-            applyButton.setEnabled(true); // Enable button if not saved
-        }
+        applyButton.setImageResource(jobPost.isSaved() ? R.drawable.ic_fill_save : R.drawable.ic_outline_save);
+        applyButton.setEnabled(!jobPost.isSaved());
 
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Save job post to the database
                 if (!jobPost.isSaved() && jobSaveListener != null) {
                     jobSaveListener.onJobSave(jobPost);
-                    jobPost.setSaved(true); // Update saved state
-                    applyButton.setImageResource(R.drawable.ic_fill_save); // Update icon
-                    applyButton.setEnabled(false); // Disable button
+                    jobPost.setSaved(true);
+                    notifyDataSetChanged();
                 }
             }
         });
@@ -88,7 +81,7 @@ public class JobPostAdapter extends BaseAdapter {
         return convertView;
     }
 
-      public interface JobSaveListener {
+    public interface JobSaveListener {
         void onJobSave(JobPost jobPost);
     }
 }

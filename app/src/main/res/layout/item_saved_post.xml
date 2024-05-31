@@ -1,27 +1,41 @@
-<!-- res/layout/item_job_post.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
+    android:orientation="horizontal"
+    android:padding="5dp">
 
-    <TextView
-        android:id="@+id/titleTextView2"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:padding="5sp"/>
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <!-- Add other UI components for job post items as needed -->
-    <TextView
-        android:id="@+id/descriptionTextView2"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/titleTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/descriptionTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:layout_marginTop="-5dp"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/removeIcon"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:padding="5sp"
-        android:layout_marginTop="-5sp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:padding="5dp"
+        android:contentDescription="Remove"
+        android:layout_gravity="center_vertical"
         />
-
 </LinearLayout>
