@@ -1,14 +1,17 @@
 package com.example.careerhub30;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -61,6 +64,7 @@ public class JobPostAdapter extends BaseAdapter {
         TextView titleTextView = convertView.findViewById(R.id.titleTextView);
         TextView descriptionTextView = convertView.findViewById(R.id.descriptionTextView);
         ImageButton applyButton = convertView.findViewById(R.id.apply);
+        ImageView sendIcon=convertView.findViewById(R.id.sendIcon);
 
         titleTextView.setText(jobPost.getTitle());
         descriptionTextView.setText(jobPost.getDescription());
@@ -77,7 +81,19 @@ public class JobPostAdapter extends BaseAdapter {
                 }
             }
         });
-
+        sendIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open link in browser
+                String url = jobPost.getLink();
+                if (url != null && !url.isEmpty()) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    context.startActivity(browserIntent);
+                } else {
+                    Log.e("JobPostAdapter", "No URL provided for this job post");
+                }
+            }
+        });
         return convertView;
     }
 
