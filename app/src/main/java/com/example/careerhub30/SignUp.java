@@ -1,6 +1,5 @@
 package com.example.careerhub30;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -11,21 +10,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
-
 public class SignUp extends AppCompatActivity {
 
     private EditText editTextNewUsername, editTextNewPassword, editTextEmail;
     private Button buttonRegister, buttonLogin;
 
     private CredentialsManager credentialsManager;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        credentialsManager = credentialsManager.getInstance(this);
+        credentialsManager = CredentialsManager.getInstance(this);
+        sessionManager = new SessionManager(this);
 
         editTextNewUsername = findViewById(R.id.editTextUsername);
         editTextNewPassword = findViewById(R.id.editTextPassword);
@@ -41,7 +40,7 @@ public class SignUp extends AppCompatActivity {
                 String email = editTextEmail.getText().toString().trim();
 
                 if (newUsername.isEmpty() || newPassword.isEmpty() || email.isEmpty()) {
-                    Toast.makeText(SignUp.this, "Please enter username ,email and password.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignUp.this, "Please enter username, email, and password.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (!isValidEmail(email)) {
@@ -55,8 +54,16 @@ public class SignUp extends AppCompatActivity {
                 if (credentialsManager.containsUsername(newUsername)) {
                     Toast.makeText(SignUp.this, "User '" + newUsername + "' already exists. Please choose a different username.", Toast.LENGTH_SHORT).show();
                 } else {
-                    credentialsManager.registerUser(newUsername, newPassword,email);
+                    credentialsManager.registerUser(newUsername, newPassword, email);
+
+                    // Create a session for the new user with current timestamp
+                    sessionManager.createLoginSession(newUsername, email);
+
                     Toast.makeText(SignUp.this, "User '" + newUsername + "' registered successfully!", Toast.LENGTH_SHORT).show();
+
+                    // Redirect to Index
+                    Intent intent = new Intent(SignUp.this, Index.class);
+                    startActivity(intent);
                     finish();
                 }
             }
@@ -71,6 +78,7 @@ public class SignUp extends AppCompatActivity {
             }
         });
     }
+
     private boolean isValidEmail(CharSequence email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }

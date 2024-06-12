@@ -1,5 +1,6 @@
 package com.example.careerhub30;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -48,5 +49,14 @@ public class CredentialsManager {
         values.put("password", password);
         values.put("email",email);
         database.insert("users", null, values);
+    }
+    public String getEmailByUsername(String username) {
+        Cursor cursor = database.query("users", new String[]{"email"}, "username = ?", new String[]{username}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            @SuppressLint("Range") String email = cursor.getString(cursor.getColumnIndex("email"));
+            cursor.close();
+            return email;
+        }
+        return null;
     }
 }

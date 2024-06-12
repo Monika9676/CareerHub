@@ -1,8 +1,11 @@
 package com.example.careerhub30;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +17,12 @@ import android.widget.TextView;
 import java.util.List;
 
 public class JobPostAdapter extends BaseAdapter {
+
     private Context context;
     private List<JobPost> jobPosts;
     private JobSaveListener jobSaveListener;
     private SQLiteDatabase database;
+
     public JobPostAdapter(Context context, List<JobPost> jobPosts, JobSaveListener jobSaveListener, SQLiteDatabase database) {
         this.context = context;
         this.jobPosts = jobPosts;
@@ -57,15 +62,27 @@ public class JobPostAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_job_post, parent, false);
         }
 
-        JobPost jobPost = jobPosts.get(position);
+        JobPost jobPost = (JobPost) getItem(position);
+
         TextView titleTextView = convertView.findViewById(R.id.titleTextView);
-        TextView descriptionTextView = convertView.findViewById(R.id.descriptionTextView);
+        TextView companyTextView = convertView.findViewById(R.id.CompanyTextView);
+        TextView locationTextView = convertView.findViewById(R.id.locationTextView);
+//        TextView descriptionTextView = convertView.findViewById(R.id.descriptionTextView);
         ImageButton applyButton = convertView.findViewById(R.id.apply);
+        ImageButton sendIcon = convertView.findViewById(R.id.sendIcon);
 
         titleTextView.setText(jobPost.getTitle());
-        descriptionTextView.setText(jobPost.getDescription());
-        applyButton.setImageResource(jobPost.isSaved() ? R.drawable.ic_fill_save : R.drawable.ic_outline_save);
-        applyButton.setEnabled(!jobPost.isSaved());
+        companyTextView.setText(Html.fromHtml("<u>" + jobPost.getCompany() + "</u>"));
+        locationTextView.setText(jobPost.getLocation());
+//        descriptionTextView.setText(jobPost.getDescription());
+
+        if (jobPost.isSaved()) {
+            applyButton.setImageResource(R.drawable.ic_fill_save);
+            applyButton.setEnabled(false);
+        } else {
+            applyButton.setImageResource(R.drawable.ic_outline_save);
+            applyButton.setEnabled(true);
+        }
 
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,13 +90,54 @@ public class JobPostAdapter extends BaseAdapter {
                 if (!jobPost.isSaved() && jobSaveListener != null) {
                     jobSaveListener.onJobSave(jobPost);
                     jobPost.setSaved(true);
-                    notifyDataSetChanged();
+                    applyButton.setImageResource(R.drawable.ic_fill_save);
+                    applyButton.setEnabled(false);
+                }
+            }
+        });
+
+        companyTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle apply action here
+                String url = jobPost.getLink();
+                if (url != null && !url.isEmpty()) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    browserIntent.setPackage("com.android.chrome");
+                    try {
+                        context.startActivity(browserIntent);
+                    } catch (Exception e) {
+                        browserIntent.setPackage(null);
+                        context.startActivity(browserIntent);
+                    }
+                } else {
+                    Log.e("JobPostAdapter", "No URL provided for this job post");
+                }
+            }
+        });
+        sendIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle apply action here
+                String url = jobPost.getLink();
+                if (url != null && !url.isEmpty()) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    browserIntent.setPackage("com.android.chrome");
+                    try {
+                        context.startActivity(browserIntent);
+                    } catch (Exception e) {
+                        browserIntent.setPackage(null);
+                        context.startActivity(browserIntent);
+                    }
+                } else {
+                    Log.e("JobPostAdapter", "No URL provided for this job post");
                 }
             }
         });
 
         return convertView;
     }
+
 
     public interface JobSaveListener {
         void onJobSave(JobPost jobPost);

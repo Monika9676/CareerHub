@@ -19,13 +19,17 @@ public class Index extends AppCompatActivity {
     private Button allJobsButton;
     private Button savedJobsButton;
     private TextView textViewWelcome;
+    private SessionManager sessionManager;
+    private Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
 
+        sessionManager = new SessionManager(this);
         textViewWelcome = findViewById(R.id.textViewExplore);
+
         String username = getIntent().getStringExtra("USERNAME");
         String password = getIntent().getStringExtra("PASSWORD");
         textViewWelcome.setText("Welcome, " + username + "!");
@@ -34,6 +38,7 @@ public class Index extends AppCompatActivity {
         allJobsButton = findViewById(R.id.AllJobs);
         savedJobsButton = findViewById(R.id.SavedJobs);
         Button addJobButton = findViewById(R.id.addJobButton);
+        logoutButton = findViewById(R.id.logoutButton);
         // Initial fragment load for All Jobs
         loadFragment(new AllJobs());
         allJobsButton.setBackgroundColor(ContextCompat.getColor(this, R.color.light_purple));
@@ -60,17 +65,10 @@ public class Index extends AppCompatActivity {
                 allJobsButton.setBackgroundColor(ContextCompat.getColor(Index.this, R.color.dark_purple)); // Assuming a default color
             }
         });
-
-        // Set OnClickListener for Add Job button
-         // Replace with actual view ID
-
-        //condition for admin
-
-        // Set OnClickListener for Add Job button
         addJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (username.equals("monika") && password.equals("monika")) {
+                if ("monika".equals(username) && "monika".equals(password)){
                     // Start the JobFormActivity for admins
                     Intent intent = new Intent(getApplicationContext(), JobFormActivity.class);
                     startActivity(intent);
@@ -78,6 +76,15 @@ public class Index extends AppCompatActivity {
                     // Show a message for non-admin users
                     Toast.makeText(Index.this, "Only admins can add jobs.", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sessionManager.logout(); // Clear session data
+                Intent intent = new Intent(Index.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Close the Index activity
             }
         });
 
