@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -26,15 +27,17 @@ public class Index extends AppCompatActivity {
 
         textViewWelcome = findViewById(R.id.textViewExplore);
         String username = getIntent().getStringExtra("USERNAME");
+        String password = getIntent().getStringExtra("PASSWORD");
         textViewWelcome.setText("Welcome, " + username + "!");
 
         // Find buttons by their IDs
         allJobsButton = findViewById(R.id.AllJobs);
         savedJobsButton = findViewById(R.id.SavedJobs);
-
+        Button addJobButton = findViewById(R.id.addJobButton);
         // Initial fragment load for All Jobs
         loadFragment(new AllJobs());
         allJobsButton.setBackgroundColor(ContextCompat.getColor(this, R.color.light_purple));
+
 
         // Set OnClickListener for "All Jobs" button
         allJobsButton.setOnClickListener(new View.OnClickListener() {
@@ -59,15 +62,25 @@ public class Index extends AppCompatActivity {
         });
 
         // Set OnClickListener for Add Job button
-        Button addJobButton = findViewById(R.id.addJobButton); // Replace with actual view ID
+         // Replace with actual view ID
+
+        //condition for admin
+
+        // Set OnClickListener for Add Job button
         addJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start the JobFormActivity
-                Intent intent = new Intent(getApplicationContext(), JobFormActivity.class);
-                startActivity(intent); // Start activity for result
+                if (username.equals("monika") && password.equals("monika")) {
+                    // Start the JobFormActivity for admins
+                    Intent intent = new Intent(getApplicationContext(), JobFormActivity.class);
+                    startActivity(intent);
+                } else {
+                    // Show a message for non-admin users
+                    Toast.makeText(Index.this, "Only admins can add jobs.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
     }
 
     private void loadFragment(Fragment fragment) {

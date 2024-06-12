@@ -29,9 +29,11 @@ public class AllJobs extends Fragment implements JobPostAdapter.JobSaveListener 
         database = dbHelper.getWritableDatabase();
 
         jobPosts = new ArrayList<>();
-        jobPosts.add(new JobPost("Android Developer", "Join our team!", "https://example.com", "Company A", "Location A"));
-        jobPosts.add(new JobPost("Web Designer", "Create stunning websites.", "https://example.com", "Company B", "Location B"));
-        jobPosts.add(new JobPost("Data Analyst", "Analyze data like a pro.", "https://example.com", "Company C", "Location C"));
+        jobPosts.add(new JobPost("UX Designer", "Contribute to setting UX guidelines and drive cross-team alignment on design direction", "https://www.amazon.jobs/en/jobs/2659143/ux-designer-enterprise-engineering", "Amazon", "USA"));
+        jobPosts.add(new JobPost("Application Developer", "Design, build and configure applications to meet business process and application requirements.", "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-4241444-S1680585_en&title=Application%20Developer", "accenture", "Gurgaon"));
+        jobPosts.add(new JobPost("Database Developer", "We are looking for a highly skilled Software Developer who specialises in the design and implementation of application databases.", "https://www.glassdoor.co.in/Job/gurgaon-database-developer-jobs-SRCH_IL.0,7_IC2921225_KO8,26.htm?jl=1008188980804&srs=JV_APPLYPANE", "BondsIndia", "Gurgaon"));
+        jobPosts.add(new JobPost("Network Engineer", "Hands-on experience in networking, routing, and switching technologies.\n" +
+                "Good understanding of OSI Model, TCP/IP protocol suite", "https://intapidm.infosysapps.com/auth/realms/careersite/protocol/openid-connect/auth?client_id=careersite&redirect_uri=https%3A%2F%2Fcareer.infosys.com%2Fjobs%2Fprivacy-consent&state=ab9e74b9-ed45-40ab-857f-571e1142081f&response_mode=fragment&response_type=code&scope=openid&nonce=968cfc53-3c10-421e-8e24-6e3dc56e045a", "Infosys Limited", "Hyderabad"));
 
         Collections.shuffle(jobPosts);
         retrieveJobPosts();

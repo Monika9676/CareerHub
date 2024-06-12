@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "User " + username + " logged in successfully!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, Index.class);
                     intent.putExtra("USERNAME", username);
+                    intent.putExtra("PASSWORD", password);
                     startActivity(intent);
                 } else {
                     Toast.makeText(MainActivity.this, "Invalid username or password. Please try again.", Toast.LENGTH_SHORT).show();
