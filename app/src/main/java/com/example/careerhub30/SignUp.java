@@ -55,6 +55,7 @@ public class SignUp extends AppCompatActivity {
                 if (credentialsManager.containsUsername(newUsername)) {
                     Toast.makeText(SignUp.this, "User '" + newUsername + "' already exists. Please choose a different username.", Toast.LENGTH_SHORT).show();
                 } else {
+                    sendRegistrationEmail(email);
                     credentialsManager.registerUser(newUsername, newPassword,email);
                     Toast.makeText(SignUp.this, "User '" + newUsername + "' registered successfully!", Toast.LENGTH_SHORT).show();
                     finish();
@@ -71,6 +72,17 @@ public class SignUp extends AppCompatActivity {
             }
         });
     }
+    private void sendRegistrationEmail(String userEmail) {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{userEmail});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Welcome to CareerHub"); // Set your desired subject
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Dear user,\n\nThank you for registering with CareerHub. Your account has been successfully created!"); // Customize the email content
+
+        // Start the email activity
+        startActivity(Intent.createChooser(emailIntent, "Send Email"));
+    }
+
     private boolean isValidEmail(CharSequence email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
