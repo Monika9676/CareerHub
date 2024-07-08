@@ -10,6 +10,7 @@ public class SessionManager {
     private static final String IS_LOGGED_IN = "isLoggedIn";
     private static final String LOGIN_TIME = "loginTime";
     private static final long FOUR_DAYS_IN_MILLIS = 4 * 24 * 60 * 60 * 1000L; // 4 days in milliseconds
+    private static final String IS_ADMIN = "isAdmin";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -22,12 +23,13 @@ public class SessionManager {
     }
 
     // Create a login session with current timestamp
-    public void createLoginSession(String username, String email) {
+    public void createLoginSession(String username, String email, boolean isAdmin) {
         long currentTimeMillis = System.currentTimeMillis();
         editor.putBoolean(IS_LOGGED_IN, true);
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_EMAIL, email);
         editor.putLong(LOGIN_TIME, currentTimeMillis);
+        editor.putBoolean(IS_ADMIN, isAdmin);
         editor.commit();
     }
 
@@ -55,7 +57,9 @@ public class SessionManager {
     public boolean isLoggedIn() {
         return sharedPreferences.getBoolean(IS_LOGGED_IN, false);
     }
-
+    public boolean isAdmin() {
+        return sharedPreferences.getBoolean(IS_ADMIN, false);
+    }
     // Log out the user
     public void logout() {
         editor.clear();

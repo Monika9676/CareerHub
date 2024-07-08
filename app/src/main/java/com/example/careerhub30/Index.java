@@ -1,18 +1,16 @@
 package com.example.careerhub30;
 
 import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 public class Index extends AppCompatActivity {
 
@@ -30,8 +28,8 @@ public class Index extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         textViewWelcome = findViewById(R.id.textViewExplore);
 
-        String username = getIntent().getStringExtra("USERNAME");
-        String password = getIntent().getStringExtra("PASSWORD");
+        String username = sessionManager.getUsername();
+        boolean isAdmin = sessionManager.isAdmin(); // Check if user is admin
         textViewWelcome.setText("Welcome, " + username + "!");
 
         // Find buttons by their IDs
@@ -42,7 +40,6 @@ public class Index extends AppCompatActivity {
         // Initial fragment load for All Jobs
         loadFragment(new AllJobs());
         allJobsButton.setBackgroundColor(ContextCompat.getColor(this, R.color.light_purple));
-
 
         // Set OnClickListener for "All Jobs" button
         allJobsButton.setOnClickListener(new View.OnClickListener() {
@@ -65,10 +62,11 @@ public class Index extends AppCompatActivity {
                 allJobsButton.setBackgroundColor(ContextCompat.getColor(Index.this, R.color.dark_purple)); // Assuming a default color
             }
         });
+
         addJobButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ("monika".equals(username) && "monika".equals(password)){
+                if (isAdmin) { // Check if user is admin
                     // Start the JobFormActivity for admins
                     Intent intent = new Intent(getApplicationContext(), JobFormActivity.class);
                     startActivity(intent);
@@ -78,6 +76,7 @@ public class Index extends AppCompatActivity {
                 }
             }
         });
+
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

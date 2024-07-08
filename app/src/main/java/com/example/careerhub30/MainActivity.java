@@ -28,11 +28,7 @@ public class MainActivity extends AppCompatActivity {
         if (sessionManager.isLoggedIn()) {
             if (sessionManager.isSessionValid()) {
                 // Redirect to Index if session is still valid
-                Intent intent = new Intent(MainActivity.this, Index.class);
-                intent.putExtra("USERNAME", sessionManager.getUsername());
-                intent.putExtra("EMAIL", sessionManager.getEmail());
-                startActivity(intent);
-                finish();
+                redirectToIndex();
                 return;
             } else {
                 // Log out user if session has expired
@@ -62,15 +58,14 @@ public class MainActivity extends AppCompatActivity {
                 if (credentialsManager.checkCredentials(username, password)) {
                     String email = credentialsManager.getEmailByUsername(username);
 
+                    // Determine if the user is admin (replace with your admin logic)
+                    boolean isAdmin = "admin".equals(username); // Example admin check
+
                     // Create a session for the logged-in user
-                    sessionManager.createLoginSession(username, email);
+                    sessionManager.createLoginSession(username, email, isAdmin);
 
                     Toast.makeText(MainActivity.this, "User " + username + " logged in successfully!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, Index.class);
-                    intent.putExtra("USERNAME", username);
-                    intent.putExtra("PASSWORD", password);
-                    startActivity(intent);
-                    finish();
+                    redirectToIndex();
                 } else {
                     Toast.makeText(MainActivity.this, "Invalid username or password. Please try again.", Toast.LENGTH_SHORT).show();
                 }
@@ -84,5 +79,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void redirectToIndex() {
+        Intent intent = new Intent(MainActivity.this, Index.class);
+        startActivity(intent);
+        finish();
     }
 }

@@ -56,8 +56,9 @@ public class SignUp extends AppCompatActivity {
                 } else {
                     credentialsManager.registerUser(newUsername, newPassword, email);
 
+                    boolean isAdmin = "admin".equals(newUsername);
                     // Create a session for the new user with current timestamp
-                    sessionManager.createLoginSession(newUsername, email);
+                    sessionManager.createLoginSession(newUsername, email,isAdmin);
 
                     Toast.makeText(SignUp.this, "User '" + newUsername + "' registered successfully!", Toast.LENGTH_SHORT).show();
 

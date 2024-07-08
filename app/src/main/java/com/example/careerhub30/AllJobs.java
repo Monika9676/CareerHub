@@ -29,7 +29,7 @@ public class AllJobs extends Fragment implements JobPostAdapter.JobSaveListener 
         database = dbHelper.getWritableDatabase();
 
         jobPosts = new ArrayList<>();
-        jobPosts.add(new JobPost("UX Designer", "Contribute to setting UX guidelines and drive cross-team alignment on design direction", "https://www.amazon.jobs/en/jobs/2659143/ux-designer-enterprise-engineering", "Amazon", "USA"));
+        jobPosts.add(new JobPost("UX Designer", "Contribute to setting UX guidelines and drive cross-team alignment on design direction", "https://account.amazon.jobs/en-US/login?job=2651283&relay=%2Fen-US%2Fjobs%2F2651283%2Fapply", "Amazon", "USA"));
         jobPosts.add(new JobPost("Application Developer", "Design, build and configure applications to meet business process and application requirements.", "https://www.accenture.com/in-en/careers/jobdetails?id=ATCI-4241444-S1680585_en&title=Application%20Developer", "accenture", "Gurgaon"));
         jobPosts.add(new JobPost("Database Developer", "We are looking for a highly skilled Software Developer who specialises in the design and implementation of application databases.", "https://www.glassdoor.co.in/Job/gurgaon-database-developer-jobs-SRCH_IL.0,7_IC2921225_KO8,26.htm?jl=1008188980804&srs=JV_APPLYPANE", "BondsIndia", "Gurgaon"));
         jobPosts.add(new JobPost("Network Engineer", "Hands-on experience in networking, routing, and switching technologies.\n" +
